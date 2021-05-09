@@ -67,17 +67,38 @@ d3.csv("assets/data/Data.csv").then( obs => {
         .attr("cx", d => xLinearScale(d.poverty))
         .attr("cy", d => yLinearScale(d.healthcare))
         .attr("r", "10")
-        .attr("fill", "blue")
-        .attr("stroke", "red")
-        .attr("opacity", ".4")
+        .attr("fill", "#7292c2")
+        .attr("stroke", "#fff")
+        .attr("opacity", ".7")
         .attr("stroke-width","1");
-
+        
+// 6. Creating the tooltip function
     let toolTip = d3.tip()
+        .attr("class", "d3-tip")
+        .offset([-10,0]) //I need to fix this
+        .html(function(tt) {
+            return(`${tt.state}<br>Poverty: ${tt.poverty}<br>Healthcare: ${tt.healthcare}`)
+        });
+    /*let toolTip = d3.tip()
         .attr("class", ".d3-tip")
         .offset([30,-50])
-        .html(tt => {
-            `${tt.state}`
-        })
+        .html(function(tt){
+            `${tt.state}<br>Poverty: ${tt.poverty}<br>Healthcare: ${tt.healthcare}`
+        });*/
+// 7. Calling the tooltip function
+    chartGroup.call(toolTip);
+
+// 8. Creating event listeners to display the tooltip
+    circlesGroup.on("mouseover", function(data) {
+        toolTip.show(data, this);
+    })
+
+// 8.1 Creating the mouseout event Listener
+    .on("mouseout", data => {
+        toolTip.hide(data);
+    })
+
+
 
 
 

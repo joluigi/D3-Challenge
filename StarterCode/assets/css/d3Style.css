@@ -42,13 +42,15 @@
 
 .d3-tip {
   padding: 6px;
-  font-size: 12px;
+  width: 80px;
+  height: 50px;
+  font-size: 8px;
   line-height: 1;
   line-height: 1.5em;
-  color: #fff;
+  color: rgb(255, 255, 255);
   text-align: center;
   text-transform: capitalize;
-  background: rgba(0, 0, 0, 0.8);
+  background: rgba(4, 18, 97, 0.8);
   border-radius: 4px;
 }
 
