@@ -33,7 +33,6 @@ d3.csv("assets/data/Data.csv").then( obs => {
     obs.forEach( d => {
         d.poverty = +d.poverty;
         d.healthcare = +d.healthcare;
-        d.Abr = +d.Abr
         //console.log(d.br)
     });
 
@@ -59,8 +58,30 @@ d3.csv("assets/data/Data.csv").then( obs => {
     chartGroup.append("g")
         .call(leftAxis);
 
-// 5. Creating the circles
-    let circlesGroup = chartGroup.selectAll("circle")
+// 5. Creating the circles option 1
+
+    // let allGroup = chartGroup.selectAll("g")
+    //     .data(obs)
+    //     .enter()
+    //     .append("g")
+
+    // let circlesGroup = allGroup.append("circle")
+    //     .attr("cx", d => xLinearScale(d.poverty))
+    //     .attr("cy", d => yLinearScale(d.healthcare))
+    //     .attr("r", "10")
+    //     .attr("fill", "#7292c2")
+    //     .attr("stroke", "#fff")
+    //     .attr("opacity", ".7")
+    //     .attr("stroke-width","1")
+
+    // let textGroup = allGroup.append("text") 
+    //     .text(d => d.Abr)
+    //     .attr("x", x => xLinearScale(x.poverty))
+    //     .attr("y", y => yLinearScale(y.healthcare))
+    //     .classed("aText", true) 
+
+// 5. Creating the circles option 2
+    let circlesGroup = chartGroup.append("g").selectAll("circle")
         .data(obs)
         .enter()
         .append("circle")
@@ -70,7 +91,17 @@ d3.csv("assets/data/Data.csv").then( obs => {
         .attr("fill", "#7292c2")
         .attr("stroke", "#fff")
         .attr("opacity", ".7")
-        .attr("stroke-width","1");
+        .attr("stroke-width","1")
+        
+       
+    let textGroup = chartGroup.append("g").selectAll("text") 
+        .data(obs)
+        .enter()
+        .append("text")
+        .text(d => d.Abr)
+        .attr("x", x => xLinearScale(x.poverty))
+        .attr("y", y => yLinearScale(y.healthcare))
+        .classed("aText", true)        
         
 // 6. Creating the tooltip function
     let toolTip = d3.tip()
@@ -79,12 +110,7 @@ d3.csv("assets/data/Data.csv").then( obs => {
         .html(function(tt) {
             return(`${tt.state}<br>Poverty: ${tt.poverty}<br>Healthcare: ${tt.healthcare}`)
         });
-    /*let toolTip = d3.tip()
-        .attr("class", ".d3-tip")
-        .offset([30,-50])
-        .html(function(tt){
-            `${tt.state}<br>Poverty: ${tt.poverty}<br>Healthcare: ${tt.healthcare}`
-        });*/
+
 // 7. Calling the tooltip function
     chartGroup.call(toolTip);
 
@@ -93,10 +119,19 @@ d3.csv("assets/data/Data.csv").then( obs => {
         toolTip.show(data, this);
     })
 
-// 8.1 Creating the mouseout event Listener
     .on("mouseout", data => {
         toolTip.hide(data);
     })
+
+    textGroup.on("mouseover", function(data) {
+        toolTip.show(data, this);
+    })
+    .on("mouseout", data => {
+        toolTip.hide(data);
+    })
+
+// 8.1 Creating the mouseout event Listener
+    
 
 // 9 Creating axes labels
 
